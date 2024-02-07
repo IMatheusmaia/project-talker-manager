@@ -1,5 +1,5 @@
 const express = require('express');
-const { readFile } = require('./utils/fileSystemHelper');
+const { readFile, writeFile, simpleWriteFile } = require('./utils/fileSystemHelper');
 const randomToken = require('./utils/randomToken');
 const loginValidation = require('./middlewares/loginValidation');
 const {
@@ -73,6 +73,39 @@ app.post('/talker',
       res.status(201).json(addNewTalker);
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
+  });
+
+// app.put('/talker/:id',
+//   isValidToken,
+//   isValidName,
+//   isValidAge,
+//   isValidTalk,
+//   isValidWatchedAt,
+//   isValidRate,
+  // updateData,
+  // async (req, res) => {
+    // const { id } = req.params;
+    // const toUpdate = req.body;
+    // try {
+    //   const updatedTalker = await updateData(Number(id), toUpdate);
+    //   return res.status(200).json(updatedTalker);
+    // } catch (err) {
+    //   return res.status(404).json({ message: `Erro ao escrever no arquivo: ${err.message}` });
+    // }
+  // });
+
+app.delete('/talker/:id',
+  isValidToken,
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 16);
+      const data = await readFile();
+      const filterData = data.filter((talker) => talker.id !== Number(id));
+      await simpleWriteFile(filterData);
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).end();
     }
   });
 

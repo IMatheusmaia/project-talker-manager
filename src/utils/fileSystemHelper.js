@@ -25,17 +25,25 @@ const writeFile = async (newData) => {
   return { id, ...newData };
 };
 
-const createTalker = async (req, res) => {
-  const { name, age, talk } = req.body;
-  const data = await readFile();
-
-  const redudance = data.some((item) => item.name === name);
-
-  if (redudance) {
-    return res.status(409).json({ message: 'Pessoa palestrante já cadastrada' });
-  }
-
-  await writeFile({ name, age, talk });
+const simpleWriteFile = async (data) => {
+  await fs.writeFile(path.resolve(__dirname, DATA_PATH), JSON.stringify(data));
 };
+// const updateData = async (id, talker) => {
+//   const data = await readFile();
+//   const newData = { id, ...talker };
+//   const updatedData = data.reduce((acc, item) => {
+//     if (item.id === id) {
+//       return [...acc, newData];
+//     }
+//     return [...acc, item];
+//   }, []);
+//   await writeFile(updatedData);
+//   return { id, ...talker };
+// };
 
-module.exports = { readFile, writeFile, createTalker };
+module.exports = {
+  readFile,
+  writeFile,
+  simpleWriteFile,
+  // updateData
+};
