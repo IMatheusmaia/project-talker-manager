@@ -23,6 +23,26 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search',
+  isValidToken,
+  async (req, res) => {
+    try {
+      const data = await readFile();
+      
+      const searchTerm = req.query.q || '';
+      if (searchTerm === undefined) {
+        return res.status(200).json(data);
+      }
+      const filterByQuery = data.filter(({ name }) => name.includes(searchTerm));
+      if (filterByQuery.length === 0) {
+        return res.status(200).json([]);
+      }
+      return res.status(200).json(filterByQuery);
+    } catch (error) {
+      return res.status(500).json({ message: error });
+    }
+  });
+
 app.get('/talker', async (_req, res) => {
   try {
     const talkers = await readFile();
