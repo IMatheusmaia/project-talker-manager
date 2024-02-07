@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
+const randomToken = require('./utils/randomToken');
 
 const app = express();
 app.use(express.json());
@@ -45,4 +46,13 @@ app.get('/talker/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Erro ao ler o arquivo' });
   }
+});
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if ([email, password].some((item) => item === undefined)) {
+    return res.status(401).json({ message: 'Campos ausentes!' });
+  }
+
+  return res.status(200).json({ token: randomToken() });
 });
