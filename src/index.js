@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
 const randomToken = require('./utils/randomToken');
+const loginValidation = require('./middlewares/loginValidation');
 
 const app = express();
 app.use(express.json());
@@ -48,7 +49,7 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', loginValidation, (req, res) => {
   const { email, password } = req.body;
   if ([email, password].some((item) => item === undefined)) {
     return res.status(401).json({ message: 'Campos ausentes!' });
