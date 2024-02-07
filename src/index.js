@@ -1,5 +1,5 @@
 const express = require('express');
-const { readFile, writeFile, simpleWriteFile } = require('./utils/fileSystemHelper');
+const { readFile, simpleWriteFile } = require('./utils/fileSystemHelper');
 const randomToken = require('./utils/randomToken');
 const loginValidation = require('./middlewares/loginValidation');
 const {
@@ -83,17 +83,17 @@ app.post('/talker',
 //   isValidTalk,
 //   isValidWatchedAt,
 //   isValidRate,
-  // updateData,
-  // async (req, res) => {
-    // const { id } = req.params;
-    // const toUpdate = req.body;
-    // try {
-    //   const updatedTalker = await updateData(Number(id), toUpdate);
-    //   return res.status(200).json(updatedTalker);
-    // } catch (err) {
-    //   return res.status(404).json({ message: `Erro ao escrever no arquivo: ${err.message}` });
-    // }
-  // });
+// updateData,
+// async (req, res) => {
+// const { id } = req.params;
+// const toUpdate = req.body;
+// try {
+//   const updatedTalker = await updateData(Number(id), toUpdate);
+//   return res.status(200).json(updatedTalker);
+// } catch (err) {
+//   return res.status(404).json({ message: `Erro ao escrever no arquivo: ${err.message}` });
+// }
+// });
 
 app.delete('/talker/:id',
   isValidToken,
