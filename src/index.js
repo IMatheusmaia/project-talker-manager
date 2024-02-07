@@ -1,6 +1,5 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs').promises;
+const readFile = require('./utils/fileSystemHelper');
 const randomToken = require('./utils/randomToken');
 const loginValidation = require('./middlewares/loginValidation');
 
@@ -19,12 +18,9 @@ app.listen(PORT, () => {
   console.log(`Online e rodando na porta ${PORT}!`);
 });
 
-const DATA_PATH = './talker.json';
-
 app.get('/talker', async (_req, res) => {
   try {
-    const response = await fs.readFile(path.resolve(__dirname, DATA_PATH), 'utf-8');
-    const talkers = JSON.parse(response);
+    const talkers = await readFile();
     if (talkers.length === 0) {
       return res.status(200).json([]);
     }
@@ -37,8 +33,7 @@ app.get('/talker', async (_req, res) => {
 app.get('/talker/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await fs.readFile(path.resolve(__dirname, DATA_PATH), 'utf-8');
-    const data = JSON.parse(response);
+    const data = await readFile();
     const found = data.find((item) => item.id === Number(id));
     if (typeof found === 'undefined') {
       return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
