@@ -28,18 +28,6 @@ const writeFile = async (newData) => {
 const simpleWriteFile = async (data) => {
   await fs.writeFile(path.resolve(__dirname, DATA_PATH), JSON.stringify(data));
 };
-// const updateData = async (id, talker) => {
-//   const data = await readFile();
-//   const newData = { id, ...talker };
-//   const updatedData = data.reduce((acc, item) => {
-//     if (item.id === id) {
-//       return [...acc, newData];
-//     }
-//     return [...acc, item];
-//   }, []);
-//   await writeFile(updatedData);
-//   return { id, ...talker };
-// };
 
 module.exports = {
   readFile,

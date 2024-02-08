@@ -96,24 +96,28 @@ app.post('/talker',
     }
   });
 
-// app.put('/talker/:id',
-//   isValidToken,
-//   isValidName,
-//   isValidAge,
-//   isValidTalk,
-//   isValidWatchedAt,
-//   isValidRate,
-// updateData,
-// async (req, res) => {
-// const { id } = req.params;
-// const toUpdate = req.body;
-// try {
-//   const updatedTalker = await updateData(Number(id), toUpdate);
-//   return res.status(200).json(updatedTalker);
-// } catch (err) {
-//   return res.status(404).json({ message: `Erro ao escrever no arquivo: ${err.message}` });
-// }
-// });
+app.put('/talker/:id',
+  isValidToken,
+  isValidName,
+  isValidAge,
+  isValidTalk,
+  isValidWatchedAt,
+  isValidRate,
+  async (req, res) => {
+    const { id } = req.params;
+    const newInfo = { ...req.body, id: Number(id) };
+
+    const data = await readFile();
+    const target = data.findIndex((item) => item.id === Number(id));
+
+    if (target === -1) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+
+    const dataLessTarget = data.filter((item) => item.id !== Number(id));
+    await simpleWriteFile([...dataLessTarget, newInfo]);
+    res.status(200).json({ ...newInfo });
+  });
 
 app.delete('/talker/:id',
   isValidToken,
